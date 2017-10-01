@@ -36,10 +36,12 @@ public class PersonRequestHandler {
                 .limit(5)
                 .map(String::valueOf)
                 .map(this::getPersonById);
+        Flux<Person> flux = Flux.fromStream(personStream).delayElements(Duration.ofMillis(1000));
+        flux = flux.concatWith(Flux.just(new Person()));
         return ServerResponse.ok()
                 .header("Access-Control-Allow-Origin", "*")
                 .contentType(TEXT_EVENT_STREAM)
-                .body(fromPublisher(Flux.fromStream(personStream).delayElements(Duration.ofMillis(1000)), Person.class));
+                .body(fromPublisher(flux, Person.class));
     }
 
     private Person getPersonById(String id) {
