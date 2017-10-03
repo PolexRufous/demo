@@ -1,22 +1,24 @@
 package com.thinkjava.demo.handlers.request;
 
-import com.thinkjava.demo.entities.Person;
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.annotation.Nonnull;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
+import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 
 import java.time.Duration;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
-import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
+import javax.annotation.Nonnull;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+import com.thinkjava.demo.entities.Person;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Component
 public class PersonRequestHandler {
@@ -37,7 +39,6 @@ public class PersonRequestHandler {
                 .map(String::valueOf)
                 .map(this::getPersonById);
         Flux<Person> flux = Flux.fromStream(personStream).delayElements(Duration.ofMillis(1000));
-        flux = flux.concatWith(Flux.just(new Person()));
         return ServerResponse.ok()
                 .header("Access-Control-Allow-Origin", "*")
                 .contentType(TEXT_EVENT_STREAM)
