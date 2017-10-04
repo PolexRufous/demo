@@ -30,7 +30,7 @@ public class ServerConfiguration
   @Bean
   public HttpServer server(RouterFunction<?> router)
   {
-    HttpServer server = HttpServer.create(8081);
+    HttpServer server = HttpServer.create(8091);
     HttpHandler httpHandler = RouterFunctions.toHttpHandler(router);
     server.start(new ReactorHttpHandlerAdapter(httpHandler));
     return server;
