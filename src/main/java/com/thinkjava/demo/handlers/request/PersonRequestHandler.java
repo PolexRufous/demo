@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import com.github.javafaker.Faker;
 import com.thinkjava.demo.entities.Person;
 
 import reactor.core.publisher.Flux;
@@ -24,21 +25,24 @@ import reactor.core.publisher.Mono;
 public class PersonRequestHandler {
 
     @Nonnull
-    public Mono<ServerResponse> getSimple(ServerRequest serverRequest) {
+    public Mono<ServerResponse> getDetailed(ServerRequest serverRequest) {
+        String id = serverRequest.pathVariable("id");
+        String name = new Faker().name().fullName();
+        String gender = getRandomGender();
+        Mono<Person> person = Mono.just(new Person().setId(id).setGender(gender).setName(name));
         return ServerResponse.ok()
-                .contentType(APPLICATION_JSON)
-                .body(fromObject(new Person()
-                        .setId("qwerty1")
-                        .setMissCount(12L)));
+            .header("Access-Control-Allow-Origin", "*")
+            .contentType(APPLICATION_JSON)
+            .body(person.delayElement(Duration.ofSeconds(3)), Person.class);
     }
 
     @Nonnull
     public Mono<ServerResponse> getShortStream(ServerRequest serverRequest) {
         Stream<Person> personStream = Stream.generate(new Random()::nextInt)
-                .limit(5)
+                .limit(15)
                 .map(String::valueOf)
                 .map(this::getPersonById);
-        Flux<Person> flux = Flux.fromStream(personStream).delayElements(Duration.ofMillis(1000));
+        Flux<Person> flux = Flux.fromStream(personStream).delayElements(Duration.ofSeconds(2));
         return ServerResponse.ok()
                 .header("Access-Control-Allow-Origin", "*")
                 .contentType(TEXT_EVENT_STREAM)
