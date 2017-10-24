@@ -4,6 +4,7 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven { url "http://central.maven.org/maven2/"}
 		maven { url "https://repo.spring.io/snapshot" }
 		maven { url "https://repo.spring.io/milestone" }
 	}
@@ -30,10 +31,10 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-webflux')
+	compile('org.springframework.boot:spring-boot-starter-webflux:2.0.0.M4')
 
 	//other dependencies
-	compileOnly('org.projectlombok:lombok:1.16.18')
+	compileOnly('org.projectlombok:lombok:1.16.18.1')
 	compileOnly('com.google.code.findbugs:jsr305:3.0.2')
 	compile('com.github.javafaker:javafaker:0.13')
 }
