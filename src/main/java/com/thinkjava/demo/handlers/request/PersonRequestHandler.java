@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class PersonRequestHandler {
-
+    private static final int MASK = (-1) >>> 1;
     @Nonnull
     public Mono<ServerResponse> getDetailed(ServerRequest serverRequest) {
         String id = serverRequest.pathVariable("id");
@@ -39,6 +39,7 @@ public class PersonRequestHandler {
     @Nonnull
     public Mono<ServerResponse> getShortStream(ServerRequest serverRequest) {
         Stream<Person> personStream = Stream.generate(new Random()::nextInt)
+                .map(integer -> integer & MASK)
                 .limit(15)
                 .map(String::valueOf)
                 .map(this::getPersonById);
