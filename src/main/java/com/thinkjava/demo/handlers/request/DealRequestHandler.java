@@ -26,7 +26,8 @@ public class DealRequestHandler {
   private Superhero superhero = new Faker().superhero();
   private Code code = new Faker().code();
   private Random random = new Random();
-  private static final int PRICE_TRESHOLD = 1000000;
+  private static final int PRICE_RANGE = 1000000;
+  private static final int PRICE_MIN = 900000;
 
   @Nonnull
   public Mono<ServerResponse> getCurrentDeals(ServerRequest request) {
@@ -44,7 +45,7 @@ public class DealRequestHandler {
         .setBuyer(getRandomHero())
         .setSeller(getRandomHero())
         .setId(code.imei())
-        .setPrice(Math.ceil(random.nextDouble() * PRICE_TRESHOLD))
+        .setPrice(Math.ceil(random.nextDouble() * PRICE_RANGE + PRICE_MIN))
         .setProductType(getRandomProductType())
         .setDescription("bla-bla-bla");
   }
