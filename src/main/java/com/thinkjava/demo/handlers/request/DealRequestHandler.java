@@ -53,7 +53,7 @@ public class DealRequestHandler {
   private Hero getRandomHero() {
     return new Hero()
         .setName(superhero.name())
-        .setDescription(superhero.descriptor())
+        .setDescriptor(superhero.descriptor())
         .setPower(superhero.power())
         .setId(code.imei());
   }

@@ -1,6 +1,7 @@
 package com.thinkjava.demo.configuration;
 
 import com.thinkjava.demo.handlers.request.DealRequestHandler;
+import com.thinkjava.demo.handlers.request.HeroRequestHandler;
 import com.thinkjava.demo.handlers.request.PersonRequestHandler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class ServerConfiguration {
   private final PersonRequestHandler personRequestHandler;
   @NonNull
   private final DealRequestHandler dealRequestHandler;
+  @NonNull
+  private final HeroRequestHandler heroRequestHandler;
 
   @Bean
   public HttpServer server(RouterFunction<?> router) {
@@ -37,6 +40,7 @@ public class ServerConfiguration {
   public RouterFunction<ServerResponse> router() {
     return route(GET("/persons"), personRequestHandler::getShortStream)
         .andRoute(GET("/persons/{id}"), personRequestHandler::getDetailed)
-        .andRoute(GET("/deals"), dealRequestHandler::getCurrentDeals);
+        .andRoute(GET("/deals"), dealRequestHandler::getCurrentDeals)
+        .andRoute(GET("/hero/{id}"), heroRequestHandler::findHero);
   }
 }

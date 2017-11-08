@@ -8,6 +8,6 @@ import lombok.experimental.Accessors;
 public class Hero {
   private String id;
   private String name;
-  private String description;
+  private String descriptor;
   private String power;
 }
