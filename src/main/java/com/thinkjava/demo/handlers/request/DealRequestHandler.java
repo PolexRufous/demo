@@ -32,7 +32,7 @@ public class DealRequestHandler {
   @Nonnull
   public Mono<ServerResponse> getCurrentDeals(ServerRequest request) {
     Stream<Deal> dealStream = Stream.generate(this::getRandomDeal);
-    Flux<Deal> dealFlux = Flux.fromStream(dealStream).delayElements(Duration.ofMillis(200));
+    Flux<Deal> dealFlux = Flux.fromStream(dealStream).delayElements(Duration.ofMillis(50));
 
     return ServerResponse.ok()
         .header("Access-Control-Allow-Origin", "*")
