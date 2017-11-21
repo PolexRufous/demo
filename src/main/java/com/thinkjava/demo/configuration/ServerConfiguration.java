@@ -3,6 +3,7 @@ package com.thinkjava.demo.configuration;
 import com.thinkjava.demo.handlers.request.DealRequestHandler;
 import com.thinkjava.demo.handlers.request.HeroRequestHandler;
 import com.thinkjava.demo.handlers.request.PersonRequestHandler;
+import com.thinkjava.demo.handlers.request.ViolationRequestHandler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,8 @@ public class ServerConfiguration {
   private final DealRequestHandler dealRequestHandler;
   @NonNull
   private final HeroRequestHandler heroRequestHandler;
+  @NonNull
+  private final ViolationRequestHandler violationRequestHandler;
 
   @Bean
   public HttpServer server(RouterFunction<?> router) {
@@ -41,6 +44,8 @@ public class ServerConfiguration {
     return route(GET("/persons"), personRequestHandler::getShortStream)
         .andRoute(GET("/persons/{id}"), personRequestHandler::getDetailed)
         .andRoute(GET("/deals"), dealRequestHandler::getCurrentDeals)
-        .andRoute(GET("/hero/{id}"), heroRequestHandler::findHero);
+        .andRoute(GET("/hero/{id}"), heroRequestHandler::findHero)
+        .andRoute(GET("/car/{number}"), violationRequestHandler::findCar)
+        .andRoute(GET("/violations"), violationRequestHandler::getViolations);
   }
 }
